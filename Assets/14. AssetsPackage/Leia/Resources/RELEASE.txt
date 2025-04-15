@@ -1,0 +1,146 @@
+RELEASE NOTES
+=============
+
+Product: Leia Unity Plugin  
+Version: 3.2.16
+Date: 02.19.25 
+CNSDK: 0.10.20  
+
+OVERVIEW
+========
+
+This package provides a Leia Display component. The Leia Display contains settings that define rendering in 3D.
+
+KNOWN ISSUES
+============
+
+- Multi-camera scenes (specifically Multi-Camera Compositing) do not currently work on Windows displays.
+
+WHAT'S NEW
+==========
+
+3.2.16
+- Enabled MonoBehaviour mouse event compatibility with LeiaDisplay.
+
+3.2.15
+- Enhanced latency tracking by passing the Windows handle to retrieve the monitor's refresh rate.
+- Improved 3D viewing comfort from the side by correcting the camera placement formula.
+
+3.2.14
+- Implemented SRSystemEventDelegate to subscribe to SR_eventType for Windows.
+- Turned off the camera when minimized on Windows.
+- Added an example scene for world space interaction.
+- Restored eye-tracking animation.
+
+3.2.13  
+- Replaced Weaver with Predicting Weaver.  
+- Implemented SetLatency and SetLatencyInFrames.  
+- Enabled setting texture color format for Weaver.
+
+3.2.12  
+- Optimized performance for Windows.  
+- Applied a hotfix for the editor preview.  
+- Implemented EnableLateLatching and IsLateLatchingEnabled support for DX11 on Windows.
+
+3.2.11  
+- Added backward compatibility with LP2 and K68.  
+- Fixed the issue where editor preview-related code caused the Unity Editor to hang.  
+- Updated the checker to correctly verify whether the current version is up to date.
+
+3.2.10  
+- Fixed LeiaMedia on Android.  
+- Rendered 2D images when no SR runtime is installed or no SR device is connected.  
+- Refined the logic for positioning eye cameras.
+
+3.2.9  
+- Implemented Lookaround filtered eyes coordinates for Android.  
+- Fixed the issue with AntiAliasing.
+
+3.2.8  
+- Fixed memory leaks on Android.
+
+3.2.7  
+- Hotfix for the black screen issue during scene switching in universal rendering.
+
+3.2.6  
+- Updated eye tracking by using individual eyes.
+
+3.2.5  
+- Added About and Log Window.  
+- Restored Update Window.  
+- Replaced head tracking with eye tracking on Windows.  
+- Switched to 2D mode when no face is detected.
+
+3.2.4  
+- Added LeiaMedia for both image and video.  
+- Added LeiaDisplay Prefab.
+
+3.2.3  
+- Brought CNSDK 0.8.8 changes to the public release branch.
+
+3.2.0  
+- Updated CNSDK to 0.8.8.
+
+3.1.6  
+- Renamed eyes to 'Left Eye' and 'Right Eye.'  
+- Resolved the black screen issue on Concept D Laptops.  
+- Resolved namespace issues.
+
+3.1.5  
+- Added Model Viewer Sample Scene (Assets/Leia/Extensions/LeiaMedia).  
+- Added Multi Media Compositing (Assets/Leia/Extensions/MultipleCameraCompositing).  
+- Resolved the issue where the SDK would sometimes error on builds due to image metadata.  
+- Resolved import errors for HDRP.  
+- Fixed the broken comfort zone gizmo when LeiaDisplay is behind the driving camera.
+
+3.1.3  
+- Resolved import errors for HDRP.  
+- Set Default Automatically Pop up to true for recommended settings.
+
+3.1.2  
+- Fixed errors on import for URP projects.  
+- Removed recommendation for Gradle minification R8 for Unity 2021+.  
+- Fixed driver camera tags not propagating to head and eyes.  
+- Fixed the issue where depth factor and lookaround factor reset when entering play mode.
+
+3.1.1  
+- Renamed variables.
+
+3.1.0  
+- Upgraded CNSDK to 0.7.120.  
+- Added CI Process.
+
+3.0.2  
+- Fixed aspect ratio in safe zone gizmo.  
+- Bug fix: Issue when switching between 2D and 3D scenes.  
+- Updated CNSDK to 0.7.120.
+
+3.0.1  
+- Added AntiAliasing to Leia Display for eye's render textures.  
+- Bug fix: Leia Display should not be tagged with dontDestroyOnLoad.  
+- Added safe zone gizmo.  
+- Windows: Updated SRCore to 1.28.1, fetched firmware values.  
+- Upgraded URP support.
+
+3.0.0  
+- Android: Updated CNSDK to 0.7.94.  
+- Android: Runtime toggle for 2D/3D rendering.  
+- URP support.  
+- Android, Windows: Cross-compatible.  
+- Display-centric and camera-centric core functionality is working.  
+- Simplified plugin architecture (old: v2, new: v3).
+
+UNITY VERSION SUPPORT
+=====================
+
+2020+ (only LTS version).
+
+QUICK START GUIDE
+=================
+
+1. Import Leia Unity package.  
+2. Either:  
+   2.a) Add LeiaDisplay script to Camera (Camera Centric).  
+   2.b) Add LeiaDisplay script to Empty GameObject (Display Centric).  
+3. More info can be found in our documentation here:  
+   https://support.leiainc.com/sdk/unity-plugin/leia-unity-plugin-guide
