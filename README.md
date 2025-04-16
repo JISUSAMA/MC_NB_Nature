@@ -1,5 +1,5 @@
 # 자연의 신비 모험
-![Image](https://github.com/user-attachments/assets/35dc6e40-5c5f-40f2-87af-8bbc9bbea203)
+![Image](https://github.com/user-attachments/assets/e8b8fb99-2c0b-4c42-ae8d-a112921c2fc1)
 
 ## 📘 콘텐츠 개요
 
