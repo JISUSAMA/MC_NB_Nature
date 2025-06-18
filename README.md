@@ -1,9 +1,9 @@
-# 🕒 지금 몇 시일까요?
+# 🌿 자연의 신비 모험 (Nature's Mystery Adventure)
 
-> **플랫폼:** Leia LUME PAD 2
-> **대상:** 초등학교 1학년
-> **엔진:** Unity 2022.3+ (C#)
-> **목표:** 디지털-아날로그 시계 읽기, 시간 개념, 일상 활동 순서 학습을 돕는 몰입형 인터랙티브 콘텐츠
+> 초등학교 1학년을 위한
+> **3D 인터랙티브 자연 관찰 학습 콘텐츠**
+
+“자연의 신비 모험”은 아이들이 **동물의 소리를 듣고 동물을 맞히는 활동**과 **식물의 성장 단계를 올바른 순서로 조합하는 활동**을 통해 자연에 대한 흥미와 이해를 키울 수 있도록 설계된 **미션 기반 학습 콘텐츠**입니다.
 
 ---
 
@@ -12,150 +12,104 @@
 ```
 Assets/
 ├── Scripts/
-│   ├── GameManager.cs
-│   ├── IntroManager.cs
-│   ├── Mission01_*.cs
-│   ├── Mission02_*.cs
-│   ├── NarrationManager.cs
-│   ├── TouchObjectDetector.cs
-│   ├── CoroutineRunner.cs
-│   ├── SettingManager.cs
-│   └── Utility/ (Clock, WordEnter, StringKeys 등)
-├── Resources/
-│   ├── Audio/ (SFX, Narration Clips)
-│   ├── Prefabs/ (ClockTower, NPC, Particles)
-│   └── Images/ (배경, UI 버튼 등)
-├── Scenes/
-│   ├── 00_Main.unity
-│   ├── 01_FixTheClockScene.unity
-│   └── 02_TimeOrderPuzzleScene.unity
+│   ├── Core/              # GameManager, SettingManager, SoundManager 등 전반적 흐름 제어
+│   ├── UI/                # IntroManager, Mission1_UIManager, Mission2_UIManager
+│   ├── Mission1/          # 동물 소리 맞히기 미션 로직
+│   ├── Mission2/          # 식물 성장 조합 미션 로직
+│   ├── Interaction/       # TouchObjectDetector, TouchSelf, WordEnter 등 입력 감지
+│   └── Utility/           # CoroutineRunner, StringKeys, BlurFeature 등 공용 기능
 ```
 
 ---
 
-## 🚀 실행 흐름
+## 🔁 실행 흐름 요약
 
-```mermaid
-graph TD
-MainScene --> Mission1Scene --> Mission2Scene --> MainScene
+### 🎬 1. 인트로 씬 (`IntroManager`)
 
-GameManager --> IntroManager
-GameManager --> Mission01_DataManager & Mission01_UIManager
-GameManager --> Mission02_DataManager & Mission02_UIManager
-GameManager --> CoroutineRunner & NarrationManager
-```
+* 웨이브 애니메이션 타이틀 출력
+* `"터치하여 시작"` 텍스트 반복 점멸
+* ▶️ 시작 클릭 시 → Mission1 시작
 
 ---
 
-## 🧠 콘텐츠 구성
+### 🐾 2. Mission1 - 동물 소리 맞히기
 
-### 콘텐츠 ① 시계 바늘 맞추기 (FixTheClockScene)
-
-* 디지털 시간 제시
-* 아날로그 시계 3개 중 정답 시계 드래그하여 시계탑에 드롭
-* 성공/실패 시 애니메이션 및 음성 피드백
-* 총 3개 시계탑 수리 시 다음 미션으로 자동 이동
-
-**사용 클래스**
-
-* `Mission01_DataManager`, `Mission01_UIManager`
-* `ClockTowerCtrl`, `WordEnter`, `TouchSelf`
+* `Mission1_DataManager`가 랜덤으로 동물 사운드 퀴즈 생성
+* 유저는 정답이라고 생각하는 동물을 터치
+* 정답 시 `"딩동댕~ 정답이에요!"` 나레이션 출력
+* 5문제 완료 시 Mission2로 전환
 
 ---
 
-### 콘텐츠 ② 하루 일과 정리하기 (TimeOrderPuzzleScene)
+### 🌱 3. Mission2 - 식물 성장 조합하기
 
-* 디지털 시간과 일러스트(기상, 양치 등) 제시
-* 아날로그 시계 4개 중 정답 선택
-* 정답일 경우 장면에 시계 삽입
-* 총 6개 장면 랜덤 등장
-
-**사용 클래스**
-
-* `Mission02_DataManager`, `Mission02_UIManager`
-* `Mission02_Clock`, `TouchObjectDetector`
+* `Mission2_DataManager`가 5단계 성장 순서 (씨앗 → 익은 토마토) 랜덤 생성
+* 드래그 앤 드롭으로 순서대로 성장 과정을 배치
+* 정답일 경우 애니메이션 및 `"정확히 알고 있네요!"` 나레이션 출력
+* 5단계 완료 시 미션 종료 및 엔딩 나레이션 출력
 
 ---
 
-## 🧩 주요 클래스 설명
+## 📚 학습 콘텐츠 구성
 
-| 클래스명                  | 역할 요약                        |
-| --------------------- | ---------------------------- |
-| `GameManager`         | 씬 전환, 게임 상태 및 터치 가능 여부 관리    |
-| `IntroManager`        | 타이틀 텍스트 애니메이션, 시작 버튼 이벤트 처리  |
-| `NarrationManager`    | 나레이션 음성 재생 + 자막 애니메이션 동기화 처리 |
-| `TouchObjectDetector` | 터치 또는 마우스 입력 감지 및 선택 오브젝트 처리 |
-| `WordEnter`           | 시계 간 충돌 감지 및 정답 판정 처리        |
-| `ClockTowerCtrl`      | 시계탑 시계 설정 및 파티클 제어           |
-| `SettingManager`      | 설정 팝업, 볼륨 토글, 3D 모드 전환       |
-| `SoundManager`        | 음성/효과음 볼륨 조절 및 클립 로드         |
-| `CoroutineRunner`     | 나레이션 등 코루틴 순차 처리 및 타임아웃 관리   |
+| 미션        | 주제            | 주요 학습 요소            | 사용자 인터랙션          |
+| --------- | ------------- | ------------------- | ----------------- |
+| Mission 1 | 동물 소리 맞히기     | 동물 이름과 소리의 연결       | 동물 캐릭터 터치         |
+| Mission 2 | 식물 성장 단계 조합하기 | 식물의 성장 순서화 및 기억력 훈련 | 컬러 식물 조각 드래그 앤 드롭 |
+
+* **오디오 중심 학습**: 동물 소리 및 나레이션은 `SoundManager`를 통해 재생
+* **감정 피드백**: `npcAnimator`를 통해 정답/오답 시 애니메이션 반응 제공
+---
+## 🖼️ 예시 이미지
+
+### Mission01 - 동물 소리 맞히기
+
+| 미션 시작 화면 1                                           | 미션 시작 화면 2                                          | 정답 시 효과                                           |
+| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
+| ![](/ScreenShots/Screenshot_20250416_091137.jpg) | ![](/ScreenShots/Screenshot_20250416_091134.jpg) | ![](/ScreenShots/Screenshot_20250416_091155.jpg) |
 
 ---
 
-## 🔊 오디오 / 나레이션 시스템
+### Mission02 - 식물 성장 단계 조합하기
 
-* 음성 클립은 `Resources/Audio/Narration/`에 저장
+| 미션 시작 화면                                            | 정답 시 효과                                          | 오답 시 화면                                          |
+| ------------------------------------------------ | ------------------------------------------------ | ------------------------------------------------ |
+| ![](/ScreenShots/Screenshot_20250416_091220.jpg) | ![](/ScreenShots/Screenshot_20250416_091233.jpg) | ![](/ScreenShots/Screenshot_20250416_091259.jpg) |
 
-* 나레이션 자동 재생 예시:
+---
+## 🔧 주요 클래스 설명
 
-  ```csharp
-  yield return CoroutineRunner.instance.RunAndWait("mission1",
-    NarrationManager.instance.ShowNarrationAuto("이제 우리가 시계를 다시 고쳐야 해요.", StringKeys.MISSION1_AUDIO4));
-  ```
-
-* 대사 키는 `StringKeys.cs`에 정의
+| 클래스                      | 역할 및 기능                                 |
+| ------------------------ | --------------------------------------- |
+| ✅ `GameManager`          | 전반적인 미션 흐름 제어, NPC 연출 및 정답 상태 관리        |
+| ✅ `NarrationManager`     | 나레이션 텍스트 출력 + 오디오 동기화 + 타이핑 애니메이션       |
+| ✅ `CoroutineRunner`      | 키 기반 코루틴 실행 및 중복 방지 / 타임아웃 처리           |
+| ✅ `TouchObjectDetector`  | 입력 감지 처리 (Mission1: 터치, Mission2: 드래그)  |
+| ✅ `Mission1_DataManager` | 동물 리스트 셔플, 문제 구성 및 정답 설정                |
+| ✅ `Mission2_DataManager` | 성장 순서 셔플, 정답 검증, 나레이션 호출 등              |
+| ✅ `Mission1_UIManager`   | 타이틀 텍스트 출력, 정오답 반응 처리, 다음 문제 진행         |
+| ✅ `Mission2_UIManager`   | 성장 과정 이미지 연출, 팝업 등장 애니메이션, 최종 엔딩 흐름 제어  |
+| ✅ `WordEnter`            | 드래그 도착지에서 정답 여부 확인 (Mission2 전용)        |
+| ✅ `TouchSelf`            | 동물 오브젝트에 부착, 정답/오답 이벤트 발생 (Mission1 전용) |
 
 ---
 
-## 🎞️ 연출 요소 (DOTween 기반)
+## ⚙️ 실행 환경
 
-* 타이틀 텍스트 웨이브 및 깜빡임 (`IntroManager`)
-* FadeInOut 페이드 전환 (`GameManager`)
-* 시계 드래그 후 Tween 되돌리기 (`TouchObjectDetector`)
-* 자막 애니메이션 출력 (`NarrationManager.DOText`)
+* **Unity 버전**: 2022.3 LTS 이상
+* **지원 디바이스**: Leia Lume Pad 2 (Android)
+* **사용 패키지**:
 
----
-
-## ⚙️ 설정 기능
-
-* 볼륨 조절: SFX/BGM 슬라이더
-* 3D 모드 전환: `LeiaDisplay.Set3DMode(bool)`
-* 재시작: `SceneManager.LoadScene`
-* 종료: `Application.Quit()`
+  * DOTween – UI 애니메이션
+  * TextMeshPro – 텍스트 출력
+  * LeiaUnity – 3D 디스플레이 지원
 
 ---
 
-## 🧪 개발 환경
+## ✨ 보조 기능
 
-| 항목       | 세부 내용                               |
-| -------- | ----------------------------------- |
-| Unity 버전 | Unity 2022.3 LTS 이상                 |
-| 디바이스     | Leia LUME PAD 2                     |
-| 지원 SDK   | TextMeshPro, DOTween, LeiaUnity SDK |
-| 입력 방식    | 터치 또는 마우스 드래그                       |
-| 초기 실행 씬  | `00_Main`                           |
-
----
-
-## 📝 기획/디자인 연계 사항
-
-* 모든 장면에 친근한 **NPC(마법사)** 내레이션 포함
-* 음성 + 자막 + 행동 피드백 통합 연출
-* 학습 시 반복적 긍정 피드백 제공
-* 엔딩: “정말 잘했어요! 다음에 또 만나요!” → 메인 화면 복귀
-
----
-
-## 📸 대표 이미지
-
-| 메인 화면                | 시계 바늘 미션            | 일과 시간 미션                |
-| -------------------- | ------------------- | ----------------------- |
-| ![](./MainTitle.jpg) | ![](./FixClock.jpg) | ![](./DailyRoutine.jpg) |
-
----
-
-## 📚 라이선스 및 저작권
-
-이 프로젝트는 ㈜엠씨미디어솔루션 교육 콘텐츠 개발 사업의 일부로 제작되었으며, 모든 저작권은 해당 기관에 귀속됩니다.
+* `SettingManager`: BGM/SFX 설정, 3D 모드 토글, 재시작/종료 버튼 포함
+* `AnimalAnimatorLayerSelector`: 동물별 애니메이터 레이어를 자동으로 활성화
+* `FloatObject`: 배경 오브젝트에 부유감 애니메이션 적용
+* `StringKeys`: 미션 키, 태그, 오디오 클립 이름 등 문자열 상수 관리
 
